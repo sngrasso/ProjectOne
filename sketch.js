@@ -17,11 +17,11 @@ var drawFunction;
 var timer;
 
 // asset arrays
-var assets = ['computer.png', 'muffin.png', 'street.jpg', 'roco.png', 'doors.png', 
+var assets = ['computer.png', 'muffin.png', 'street.jpg', 'roco.png', 'doors.png',
               'phone.png', 'duck.png', 'train.jpg', 'backdoor.png', 'gold.png',
-              'silver.png', 'bronze.png']
-var instructions = []
-var images = []
+              'silver.png', 'bronze.png', 'virus.png'];
+var instructions = [];
+var images = [];
 
 // dialogue box placement settings 
 var dialogueBoxPadding = 50;
@@ -32,7 +32,7 @@ var dialogueTextSet = dialogueBoxPadding + 50;
 var dialogueTextY = dialogueBoxOffset + 150;
 
 // roco placement settings
-var rocoOffsetX = 800; 
+var rocoOffsetX = 800;
 var rocoOffsetY = 600;
 
 // speech box placement settings 
@@ -52,6 +52,7 @@ var spamDoor = 0;
 var spamDoorMax = 4;
 var spamVirus = 0;
 var spamVirusMax = 30;
+var virus = 0; 
 
 // health bar states
 var healthBarW = 500;
@@ -66,547 +67,560 @@ var keypadMaxY = 300;
 
 // preload function for loading our images and instructions
 function preload() {
-  for (var i = 0; i < assets.length; i++) {
-    images[i] = loadImage('assets/' + assets[i]);
-  }
-  instructions = loadStrings("instructions.txt");
-  print(instructions)
+    var i;
+    for (var i = 0; i < assets.length; i++) {
+        images[i] = loadImage('assets/' + assets[i]);
+    }
+    instructions = loadStrings("instructions.txt");
+    print(instructions)
 }
 
 // Setup code goes here
 function setup() {
 
-  let cnv = createCanvas(1000, 800);
-  cnv.position(width/4, 0);
+    let cnv = createCanvas(1000, 800);
+    cnv.position(width / 4, 0);
 
-  textSize(30);
-  textAlign(CENTER);
-  imageMode(CENTER);
+    textSize(30);
+    textAlign(CENTER);
+    imageMode(CENTER);
 
-  timer = new Timer(8000);
+    timer = new Timer(8000);
 
-  drawFunction = drawWelcome;
-
-  print("setting up sketch");
- }
+    drawFunction = drawWelcome;
+    
+    print("setting up sketch");
+}
 
 // Draw code goes here
 function draw() {
 
-  background(186, 207, 255);
-  drawFunction();
+    background(186, 207, 255);
+    drawFunction();
 
 }
 
 // Welcome Screen
-drawWelcome = function() {
-  fill(255);
-  textAlign(CENTER);
-  text("Press Start", width/2, height/2);
+drawWelcome = function () {
+    fill(255);
+    textAlign(CENTER);
+    text("Press Start", width / 2, height / 2);
 }
 
 // Instruction Screen
-drawInstructions = function() {
-  fill(255);
-  noStroke();
-  textAlign(CENTER);
-  text("Press Space", width/2, height/2);
-  image(images[3], rocoOffsetX, rocoOffsetY);
-  rect(speechBoxX, speechBoxY, speechBoxSizeW, speechBoxSizeH, 10);
-  textSize(20);
-  fill("blue")
-  textAlign(LEFT);
-  for (var i = 0; i < instructions.length - 1; i++) {
-    text(instructions[i], speechBoxX + 10, (30 * i) + padding)
-  }
-  textSize(30);
-  textAlign(RIGHT);
+drawInstructions = function () {
+    fill(255);
+    noStroke();
+    textAlign(CENTER);
+    text("Press Space", width / 2, height / 2);
+    image(images[3], rocoOffsetX, rocoOffsetY);
+    rect(speechBoxX, speechBoxY, speechBoxSizeW, speechBoxSizeH, 10);
+    textSize(20);
+    fill("blue")
+    textAlign(LEFT);
+    for (var i = 0; i < instructions.length - 1; i++) {
+        text(instructions[i], speechBoxX + 10, (30 * i) + padding)
+    }
+    textSize(30);
+    textAlign(RIGHT);
 }
 
 // Room Zero
-drawRoomZero = function() {
-  image(images[2], width / 2, 220);
-  dialogueBox();
-  fill(255);
-  noStroke();
-  textAlign(LEFT);
+drawRoomZero = function () {
+    image(images[2], width / 2, 220);
+    dialogueBox();
+    fill(255);
+    noStroke();
+    textAlign(LEFT);
 
-  text("Okay Junior Agent! lets start on our\n" +
+    text("Okay Junior Agent! lets start on our\n" +
         "journey! Be on the lookout for anything suspicious!\n\n" +
         "[Click inside the square]", dialogueTextSet, dialogueTextY);
 
-  text("Digi Tip - (T)\n", 50, 50);
+    text("Digi Tip - (T)\n", 50, 50);
 }
 
 /// ALL ROOM ONE RELATED FUNCTIONS (INCLUDES ALT) ///
-drawRoomOne = function() {
-  // image(images[2], width / 2, 220);
-  image(images[1], width / 2, height / 4 + padding);
-  universalFormat();
+drawRoomOne = function () {
+    // image(images[2], width / 2, 220);
+    image(images[1], width / 2, height / 4 + padding);
+    universalFormat();
 
-  text("On the way to the checkpoint you bump into a stranger\n" +
+    text("On the way to the checkpoint you bump into a stranger\n" +
         "They ask very PERSONAL questions about your work...\n\n" +
         "(1) do not trust them\n\n(2) give them your information", dialogueTextSet, dialogueTextY);
 
-  text("Digi Tip - (T)\n", 50, 50);
+    text("Digi Tip - (T)\n", 50, 50);
 }
 
-drawRoomOneAlt = function() {
-  image(images[7], width / 2, 220);
+drawRoomOneAlt = function () {
+    image(images[7], width / 2, 220);
 
-  universalFormat();
+    universalFormat();
 
-  text("Bad Idea! CAT from before has now started running after you.\n" +
-       "Hide in the nearest public station to get them off our tail\n\n" +
-       "[Click on station]", dialogueTextSet, dialogueTextY);
+    text("Bad Idea! CAT from before has now started running after you.\n" +
+        "Hide in the nearest public station to get them off our tail\n\n" +
+        "[Click on station]", dialogueTextSet, dialogueTextY);
 
-  text("Digi Tip - (T)\n", 50, 50);
+    text("Digi Tip - (T)\n", 50, 50);
 }
 
-drawHintOne = function() {
-  image(images[1], width / 2, height / 4 + padding);
-  universalFormat();
+drawHintOne = function () {
+    image(images[1], width / 2, height / 4 + padding);
+    universalFormat();
 
-  text("Never give away your personal information to strangers!\n" +
-       "especially to strangers online\n\n(B) for back", dialogueTextSet, dialogueTextY);
+    text("Never give away your personal information to strangers!\n" +
+        "especially to strangers online\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
-drawHintOneAlt = function() {
-  image(images[7], width / 2, 220);
-  universalFormat();
+drawHintOneAlt = function () {
+    image(images[7], width / 2, 220);
+    universalFormat();
 
-  text("If someone online is constantly following you or harassing\n" + 
-       "you online BLOCK them! If they keep coming back tell a\n" + 
-       "trusted adult about it.\n\n(B) for back", dialogueTextSet, dialogueTextY);
+    text("If someone online is constantly following you or harassing\n" +
+        "you online BLOCK them! If they keep coming back tell a\n" +
+        "trusted adult about it.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
 /// ALL ROOM 2 RELATED FUNCTIONS (INCLUDES ALT) ///
-drawRoomTwo = function() {
-  // image(images[2], width / 2, height/2);
-  image(images[1], width / 2, height / 4 + padding);
-  universalFormat();
+drawRoomTwo = function () {
+    // image(images[2], width / 2, height/2);
+    image(images[1], width / 2, height / 4 + padding);
+    universalFormat();
 
-  text("Your suspisions were correct...turns out ITS AN ENEMY SPY!!!\n" +
-       "Quick take action!\n\n" +
-       "(1) Call the agency for backup\n\n(2) do nothing", dialogueTextSet, dialogueTextY);
+    text("Your suspisions were correct...turns out ITS AN ENEMY SPY!!!\n" +
+        "Quick take action!\n\n" +
+        "(1) Call the agency for backup\n\n(2) do nothing", dialogueTextSet, dialogueTextY);
 
-  text("Digi Tip - (T)\n", 50, 50);
+    text("Digi Tip - (T)\n", 50, 50);
 }
 
-drawHintTwo = function() {
-  image(images[1], width / 2, height / 4 + padding);
-  universalFormat();
+drawHintTwo = function () {
+    image(images[1], width / 2, height / 4 + padding);
+    universalFormat();
 
-  text("If you're ever in an uncomfortable position online when talking to someone call an adult.\n\n(B) for back", dialogueTextSet, dialogueTextY);
+    text("If you're ever in an uncomfortable position online when talking to someone call an adult.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
-drawDailPhone = function() {
-  image(images[5], width / 2, height / 2);
+drawDailPhone = function () {
+    image(images[5], width / 2, height / 2);
 
-  if (dailTracker >= dailTrackerMax) {
-      dailTracker = 0;
-      drawFunction = drawRoomThree;
-  }
+    if (dailTracker >= dailTrackerMax) {
+        dailTracker = 0;
+        drawFunction = drawRoomThree;
+    }
 
-  text("dial (click) the buttons on the phone to call for backup (4 times)", padding, padding / 2);
+    text("dial (click) the buttons on the phone to call for backup (4 times)", padding, padding / 2);
 }
 
-drawRoomTwoAlt = function() {
-  // image(images[2], width / 2, height/2);
-  image(images[6], width / 2, height / 4 + padding);
-  universalFormat();
+drawRoomTwoAlt = function () {
+    // image(images[2], width / 2, height/2);
+    image(images[6], width / 2, height / 4 + padding);
+    universalFormat();
 
-  text("Look! It's DUCK a senior agent from the agency!\n" + 
-       "It looks like they're here to help rescue you!\n" + 
-       "Follow them to get back on track.\n\n(1) Follow them", dialogueTextSet, dialogueTextY);
+    text("Look! It's DUCK a senior agent from the agency!\n" +
+        "It looks like they're here to help rescue you!\n" +
+        "Follow them to get back on track.\n\n(1) Follow them", dialogueTextSet, dialogueTextY);
 }
 
 /// ALL ROOM 3 RELATED FUNCTIONS (INCLUDES ALT) ///
-drawRoomThree = function() {
-  image(images[4], width / 2, height / 4 + padding);
-  rect(mouseX - 25, mouseY - 25, 75, 50, 5);
-  universalFormat();
+drawRoomThree = function () {
+    image(images[4], width / 2, height / 4 + padding);
+    rect(mouseX - 25, mouseY - 25, 75, 50, 5);
+    universalFormat();
 
-  text("Luckily Backup was able to come in on time.\n" + 
-       "And we were able to escape. Let's use this ID\n" +
-       "we stole from CAT and get inside the enemy base\n\n" + 
-       "[Hover the ID card over the keypad]\n", dialogueTextSet, dialogueTextY);
+    text("Luckily Backup was able to come in on time.\n" +
+        "And we were able to escape. Let's use this ID\n" +
+        "we stole from CAT and get inside the enemy base\n\n" +
+        "[Hover the ID card over the keypad]\n", dialogueTextSet, dialogueTextY);
 
-  if ((mouseX >= keypadMinX && mouseX <= keypadMaxX) && (mouseY >= keypadMinY && mouseY <= keypadMaxY)) {
-    drawFunction = drawRoomFour;
-  }
+    if ((mouseX >= keypadMinX && mouseX <= keypadMaxX) && (mouseY >= keypadMinY && mouseY <= keypadMaxY)) {
+        drawFunction = drawRoomFour;
+    }
 }
 
-drawRoomThreeAlt = function() {
-  image(images[8], width / 2, height / 4 + padding);
-  universalFormat();
+drawRoomThreeAlt = function () {
+    image(images[8], width / 2, height / 4 + padding);
+    universalFormat();
 
-  // health bar
-  rect(padding * 2.5, padding / 4, healthBarW, healthBarH);
-  fill("red");
-  rect(padding * 2.5, padding / 4, healthBarW - (spamDoor * padding), healthBarH);
-  fill(255);
+    // health bar
+    rect(padding * 2.5, padding / 4, healthBarW, healthBarH);
+    fill("red");
+    rect(padding * 2.5, padding / 4, healthBarW - (spamDoor * padding), healthBarH);
+    fill(255);
 
-  text("DUCK takes you to the back door of the enemy spy's building.\n" + 
-       "The door seems weak lets kick it in the get inside!!\n\n" + 
-       "(B) keep clicking 'B' until the door opens\n", dialogueTextSet, dialogueTextY);
+    text("DUCK takes you to the back door of the enemy spy's building.\n" +
+        "The door seems weak lets kick it in the get inside!!\n\n" +
+        "(B) keep clicking 'B' until the door opens\n", dialogueTextSet, dialogueTextY);
 
-  text("\tHealth:\n", padding, padding / 2);
+    text("\tHealth:\n", padding, padding / 2);
 }
 
 /// ALL ROOM FOUR RELATED FUNCTIONS (INCLUDES ALT) ///
-drawRoomFour = function() {
-  image(images[0], width / 2, height / 4);
-  universalFormat();
+drawRoomFour = function () {
+    image(images[0], width / 2, height / 4);
+    universalFormat();
 
-  text("Phew! Almost got the file. Now we need to choose a STRONG\n" + 
-       "password to finish the download.\n\n" + 
-       "(1) 12345\n\n(2) JsdD3*!", dialogueTextSet, dialogueTextY);
+    text("Phew! Almost got the file. Now we need to choose a STRONG\n" +
+        "password to finish the download.\n\n" +
+        "(1) 12345\n\n(2) JsdD3*!", dialogueTextSet, dialogueTextY);
 }
 
-drawRoomFourAlt = function() {
-  image(images[0], width / 2, height / 4);
-  universalFormat();
+drawRoomFourAlt = function () {
+    image(images[0], width / 2, height / 4);
+    universalFormat();
 
-  text("Phew! We've almost got what we need. But Oh No! We\n" +
-       "forgot the name of the file. We'll have to now download files\n" +
-       "at random. This could crash the system are you sure??\n\n" + 
-       "(1) I'm Sure", dialogueTextSet, dialogueTextY);
-  text("Digi Tip - (T)\n", padding / 2, padding / 2);
+    text("Phew! We've almost got what we need. But Oh No! We\n" +
+        "forgot the name of the file. We'll have to now download files\n" +
+        "at random. This could crash the system are you sure??\n\n" +
+        "(1) I'm Sure", dialogueTextSet, dialogueTextY);
+    text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
-drawHintFour = function() {
-  image(images[0], width / 2, height / 4);
-  universalFormat();
+drawHintFour = function () {
+    image(images[0], width / 2, height / 4);
+    universalFormat();
 
-  text("When making passwords make them unique but memorable!\n" +
-       "Never share your passwords with other people \n" + 
-       "unless they are a trusted adult\n(B) for back", dialogueTextSet, dialogueTextY);
+    text("When making passwords make them unique but memorable!\n" +
+        "Never share your passwords with other people \n" +
+        "unless they are a trusted adult\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
-drawHintFourAlt = function() {
-  image(images[0], width / 2, height / 4);
-  universalFormat();
+drawHintFourAlt = function () {
+    image(images[0], width / 2, height / 4);
+    universalFormat();
 
-  text("Ask permission before downloading unknown files from\n" +
-       "online. You could come across a virus that could \n" + 
-       "infect your computer\n(B) for back", dialogueTextSet, dialogueTextY);
+    text("Ask permission before downloading unknown files from\n" +
+        "online. You could come across a virus that could \n" +
+        "infect your computer\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
 // Fifth Room Alt only
-drawRoomFiveAlt = function() {
-   text("Spam X", padding, padding * 2.5);
+drawRoomFiveAlt = function () {
+    push();
+    rectMode(CENTER);
+    translate(width/2, height/2);
+    rotate(virus);
+    image(images[12], 0, 0);
+    pop();
 
-   text("Time Remaining: " + Math.round(timer.getRemainingTime()), padding, padding);
-   text("# hits: " + spamVirus, padding, padding * 1.5);
+    virus = virus + (spamVirus/200);
 
-   if (spamVirus < spamVirusMax && timer.expired()) {
-      drawFunction = drawGameOver;
-   }
-   else if (spamVirus >= spamVirusMax && timer.expired()){
-      drawFunction = drawOkayRoom;
-   }
+    
+    text("[Spam X]", padding - 50, padding * 2);
+
+    
+    text("# hits: " + spamVirus, width / 2 - 60, padding * 1.5);
+    text("Time Remaining: " + Math.round(timer.getRemainingTime()), width / 2 + padding, padding * 1.5);
+    textSize(40);
+    text("KILL THE VIRUS!!!", padding - 50, padding * 1.5);
+    textSize(30);
+
+    if (spamVirus < spamVirusMax && timer.expired()) {
+        drawFunction = drawGameOver;
+    } else if (spamVirus >= spamVirusMax && timer.expired()) {
+        drawFunction = drawOkayRoom;
+    }
 }
 
 // First Ending -- Best Ending
-drawFinalRoom = function() {
-  image(images[9], width / 2, height / 4);
-  universalFormat();
+drawFinalRoom = function () {
+    image(images[9], width / 2, height / 4);
+    universalFormat();
 
-  text("NICE WORK agent now we have all of the super secret files\n" + 
-       "all thanks to you!\n\n" + 
-       "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
+    text("NICE WORK agent now we have all of the super secret files\n" +
+        "all thanks to you!\n\n" +
+        "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
 }
 
 // Second Ending -- Nice Ending
-drawOkayRoom = function() {
-  image(images[10], width / 2, height / 4);
-  universalFormat();
+drawOkayRoom = function () {
+    image(images[10], width / 2, height / 4);
+    universalFormat();
 
-  text("Not too shabby Junior Agent! Now we have some of the\n" + 
-       "secret files all thanks to you!\n\n" + 
-       "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
+    text("Not too shabby Junior Agent! Now we have some of the\n" +
+        "secret files all thanks to you!\n\n" +
+        "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
 }
 
 // Third Ending -- Worst Ending
-drawGameOver = function() {
-  image(images[11], width / 2, height / 4);
-  universalFormat();
+drawGameOver = function () {
+    image(images[11], width / 2, height / 4);
+    universalFormat();
 
-  text("It's okay Junior Agent... We all messup sometimes\n" +
-       "Would you like to try again?\n" +
-       "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
+    text("It's okay Junior Agent... We all messup sometimes\n" +
+        "Would you like to try again?\n" +
+        "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
 }
 
 
 // KEY TYPED FUNCTION //
 function keyTyped() {
-  // HOME SCREEN //
-  if (drawFunction == drawWelcome) {
-    if (key == ' ') {
-      drawFunction = drawInstructions;
-    }
-    return;
-  }
-
-  // INTRO SCREEN //
-  if (drawFunction == drawInstructions) {
-    endingTracker = 0;
-    if (key == ' ') {
-      drawFunction = drawRoomOne;
-    }
-    return;
-  }
-
-  ///*****MAIN ROOMS*****///
-
-  // FIRST ROOM //
-  if (drawFunction == drawRoomOne) {
-    switch(key) {
-      case '1':
-        drawFunction = drawRoomTwo;
-        break;
-      case '2':
-        endingTracker = endingTracker + 1;
-        drawFunction = drawRoomOneAlt;
-        break;
-      case 'T':
-      case 't':
-        drawFunction = drawHintOne;
-        break;
-    }
-    return;
-  }
-
-  // HINT 1 SCREEN //
-  if (drawFunction == drawHintOne) {
-    switch(key) {
-      case 'B':
-      case 'b':
-        drawFunction = drawRoomOne;
-        break;
-    }
-    return;
-  }
-
-  // SECOND ROOM //
-  if (drawFunction == drawRoomTwo) {
-    switch(key) {
-      case '1':
-        drawFunction = drawDailPhone;
-        break;
-      case '2':
-        drawFunction = drawRoomOneAlt;
-        break;
-      case 'T':
-      case 't':
-        drawFunction = drawHintTwo;
-        break;
-    }
-    return;
-  }
-
-  // HINT 1 SCREEN //
-  if (drawFunction == drawHintTwo) {
-    switch(key) {
-      case 'B':
-      case 'b':
-        drawFunction = drawRoomTwo;
-        break;
-    }
-    return;
-  }
-
-
-  // THIRD ROOM //
-  if (drawFunction == drawRoomThree) {
-    switch(key) {
-      case 'b':
-        spamDoor = spamDoor + 1;
-        break;
-    }
-    if (spamDoor > spamDoorMax) {
-      spamDoor = 0;
-      drawFunction = drawRoomFour;
-    }
-    return;
-  }
-
-  // FORTH ROOM //
-  if (drawFunction == drawRoomFour) {
-    switch(key) {
-      case '1':
-        drawFunction = drawOkayRoom;
-        break;
-      case '2':
-        drawFunction = drawFinalRoom;
-        break;
-      case 'T':
-      case 't':
-        drawFunction = drawHintFour;
-        break;
-
-    }
-    return;
-  }
-
-   // HINT 4 SCREEN //
-  if (drawFunction == drawHintFour) {
-    switch(key) {
-      case 'B':
-      case 'b':
-        drawFunction = drawRoomFour;
-        break;
-    }
-    return;
-  }
-
-  ///*****ALT ROOMS*****///
-
-  if (drawFunction == drawRoomOneAlt) {
-    switch(key) {
-      case 'T':
-      case 't':
-        drawFunction = drawHintOneAlt;
-        break;
-    }
-    return;
-  }
-
-  // HINT 1 SCREEN //
-  if (drawFunction == drawHintOneAlt) {
-
-    switch(key) {
-      case 'B':
-      case 'b':
-        drawFunction = drawRoomOneAlt;
-        break;
+    // HOME SCREEN //
+    if (drawFunction == drawWelcome) {
+        if (key == ' ') {
+            drawFunction = drawInstructions;
+        }
+        return;
     }
 
-    return;
-  }
-
-  if (drawFunction == drawRoomTwoAlt) {
-
-    switch(key) {
-      case '1':
-        drawFunction = drawRoomThreeAlt;
-        break;
+    // INTRO SCREEN //
+    if (drawFunction == drawInstructions) {
+        endingTracker = 0;
+        if (key == ' ') {
+            drawFunction = drawRoomOne;
+        }
+        return;
     }
 
-    return;
-  }
+    ///*****MAIN ROOMS*****///
 
-  // ALT ROOM THREE //
-  if (drawFunction == drawRoomThreeAlt) {
-
-    switch(key) {
-      case 'b':
-        spamDoor = spamDoor + 1;
-        break;
+    // FIRST ROOM //
+    if (drawFunction == drawRoomOne) {
+        switch (key) {
+            case '1':
+                drawFunction = drawRoomTwo;
+                break;
+            case '2':
+                endingTracker = endingTracker + 1;
+                drawFunction = drawRoomOneAlt;
+                break;
+            case 'T':
+            case 't':
+                drawFunction = drawHintOne;
+                break;
+        }
+        return;
     }
 
-    if (spamDoor > spamDoorMax) {
-      spamDoor = 0;
-      drawFunction = drawRoomFourAlt;
+    // HINT 1 SCREEN //
+    if (drawFunction == drawHintOne) {
+        switch (key) {
+            case 'B':
+            case 'b':
+                drawFunction = drawRoomOne;
+                break;
+        }
+        return;
     }
 
-    return;
-  }
-
-  // ALT ROOM FOUR //
-  if (drawFunction == drawRoomFourAlt) {
-
-    switch(key) {
-      case '1':
-        drawFunction = drawRoomFiveAlt;
-        spamVirus = 0;
-        timer.start();
-        break;
-      case 'T':
-      case 't':
-        drawFunction = drawHintFourAlt;
-        break;
+    // SECOND ROOM //
+    if (drawFunction == drawRoomTwo) {
+        switch (key) {
+            case '1':
+                drawFunction = drawDailPhone;
+                break;
+            case '2':
+                drawFunction = drawRoomOneAlt;
+                break;
+            case 'T':
+            case 't':
+                drawFunction = drawHintTwo;
+                break;
+        }
+        return;
     }
 
-  }
-
-  // HINT 4 ALT SCREEN //
-  if (drawFunction == drawHintFourAlt) {
-
-    switch(key) {
-      case 'B':
-      case 'b':
-        drawFunction = drawRoomFourAlt;
-        break;
+    // HINT 1 SCREEN //
+    if (drawFunction == drawHintTwo) {
+        switch (key) {
+            case 'B':
+            case 'b':
+                drawFunction = drawRoomTwo;
+                break;
+        }
+        return;
     }
 
-    return;
-  }
 
-  if (drawFunction == drawRoomFiveAlt) {
-
-    switch(key) {
-      case 'X':
-      case 'x':
-        spamVirus = spamVirus + 1;
-        break;
+    // THIRD ROOM //
+    if (drawFunction == drawRoomThree) {
+        switch (key) {
+            case 'b':
+                spamDoor = spamDoor + 1;
+                break;
+        }
+        if (spamDoor > spamDoorMax) {
+            spamDoor = 0;
+            drawFunction = drawRoomFour;
+        }
+        return;
     }
 
-    return;
-  } 
+    // FORTH ROOM //
+    if (drawFunction == drawRoomFour) {
+        switch (key) {
+            case '1':
+                drawFunction = drawOkayRoom;
+                break;
+            case '2':
+                drawFunction = drawFinalRoom;
+                break;
+            case 'T':
+            case 't':
+                drawFunction = drawHintFour;
+                break;
 
-  ///*****FINAL ROOMS*****///
-
-  // FINAL ROOM //
-  if (drawFunction == drawFinalRoom || drawFunction == drawOkayRoom ||drawFunction == drawGameOver) {
-
-    switch(key) {
-      case 'Y':
-      case 'y':
-        drawFunction = drawInstructions;
-        break;
-      case 'N':
-      case 'n':
-        drawFunction = drawWelcome;
-        break;
+        }
+        return;
     }
 
-    return;
-  }
+    // HINT 4 SCREEN //
+    if (drawFunction == drawHintFour) {
+        switch (key) {
+            case 'B':
+            case 'b':
+                drawFunction = drawRoomFour;
+                break;
+        }
+        return;
+    }
+
+    ///*****ALT ROOMS*****///
+
+    if (drawFunction == drawRoomOneAlt) {
+        switch (key) {
+            case 'T':
+            case 't':
+                drawFunction = drawHintOneAlt;
+                break;
+        }
+        return;
+    }
+
+    // HINT 1 SCREEN //
+    if (drawFunction == drawHintOneAlt) {
+
+        switch (key) {
+            case 'B':
+            case 'b':
+                drawFunction = drawRoomOneAlt;
+                break;
+        }
+
+        return;
+    }
+
+    if (drawFunction == drawRoomTwoAlt) {
+
+        switch (key) {
+            case '1':
+                drawFunction = drawRoomThreeAlt;
+                break;
+        }
+
+        return;
+    }
+
+    // ALT ROOM THREE //
+    if (drawFunction == drawRoomThreeAlt) {
+
+        switch (key) {
+            case 'b':
+                spamDoor = spamDoor + 1;
+                break;
+        }
+
+        if (spamDoor > spamDoorMax) {
+            spamDoor = 0;
+            drawFunction = drawRoomFourAlt;
+        }
+
+        return;
+    }
+
+    // ALT ROOM FOUR //
+    if (drawFunction == drawRoomFourAlt) {
+
+        switch (key) {
+            case '1':
+                drawFunction = drawRoomFiveAlt;
+                spamVirus = 0;
+                timer.start();
+                break;
+            case 'T':
+            case 't':
+                drawFunction = drawHintFourAlt;
+                break;
+        }
+
+    }
+
+    // HINT 4 ALT SCREEN //
+    if (drawFunction == drawHintFourAlt) {
+
+        switch (key) {
+            case 'B':
+            case 'b':
+                drawFunction = drawRoomFourAlt;
+                break;
+        }
+
+        return;
+    }
+
+    if (drawFunction == drawRoomFiveAlt) {
+
+        switch (key) {
+            case 'X':
+            case 'x':
+                spamVirus = spamVirus + 1;
+                break;
+        }
+
+        return;
+    }
+
+    ///*****FINAL ROOMS*****///
+
+    // FINAL ROOM //
+    if (drawFunction == drawFinalRoom || drawFunction == drawOkayRoom || drawFunction == drawGameOver) {
+
+        switch (key) {
+            case 'Y':
+            case 'y':
+                drawFunction = drawInstructions;
+                break;
+            case 'N':
+            case 'n':
+                drawFunction = drawWelcome;
+                break;
+        }
+
+        return;
+    }
 
 }
 
 function mousePressed() {
-  // DIAL ROOM //
-  if (drawFunction == drawDailPhone) {
-    if (dailTracker < dailTrackerMax) {
-      dailTracker  = dailTracker + 1;
-      return;
-    } 
-  } 
-
-  // ROOM ONE ALT //
-  if (drawFunction == drawRoomOneAlt) {
-    if ((mouseX >= 325 && mouseX <= 675) && (mouseY >= 45 && mouseY <= 395)) {
-      drawFunction = drawRoomTwoAlt;
+    // DIAL ROOM //
+    if (drawFunction == drawDailPhone) {
+        if (dailTracker < dailTrackerMax) {
+            dailTracker = dailTracker + 1;
+            return;
+        }
     }
-  }
 
-  
-  print("X: " + mouseX + " : " + "Y: " + mouseY);
+    // ROOM ONE ALT //
+    if (drawFunction == drawRoomOneAlt) {
+        if ((mouseX >= 325 && mouseX <= 675) && (mouseY >= 45 && mouseY <= 395)) {
+            drawFunction = drawRoomTwoAlt;
+        }
+    }
+
+    print("X: " + mouseX + " : " + "Y: " + mouseY);
 }
 
 // draws the dialogue Box for each page//
 function dialogueBox() {
-  fill(72, 67, 204);
-  rect(dialogueBoxPadding, height - dialogueBoxOffset, width - padding, padding * 3, dialogueBoxRadius);
+    fill(72, 67, 204);
+    rect(dialogueBoxPadding, height - dialogueBoxOffset, width - padding, padding * 3, dialogueBoxRadius);
 }
 
 // formatting universal to several function calls
 function universalFormat() {
-  dialogueBox();
-  fill(255);
-  noStroke();
-  textAlign(LEFT);
+    dialogueBox();
+    fill(255);
+    noStroke();
+    textAlign(LEFT);
 }
