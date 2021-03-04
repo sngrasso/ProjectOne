@@ -1,16 +1,15 @@
 /*************************************************************************
-    (*)Rooms of My Dream House
+    (*)iSpy - and Interactive State Machine Game
           (*)by Stephanie Grasso
 
-    (*)Overview - program that provides different states of rooms,
-    immitating the floor plan of a house. Users are able to navigate
-    throught these rooms that display a bunch of .png files. 
+    (*)Overview - small follow your own adventure state machine game with 
+    a lean toward understanding digital safety online. 
  
     ---------------------------------------------------------------------
     (*)Notes: 
-     (1) cleaning, cleaning, more cleaning
-     (2) hard coded values everywhere it hurts me
-     (3) add hover effects to arrows and an instruction page
+     (1) Really long code base
+     (2) could be better optimized in some areas
+     (3) extended feature - secret character after collecting all tips
 **************************************************************************/
 //globals
 var drawFunction;
@@ -45,7 +44,6 @@ var speechBoxSizeH = 650;
 var padding = 100;
 
 // variables for tracking certain states
-var endingTracker = 0;
 var dailTracker = 0;
 var dailTrackerMax = 4;
 var spamDoor = 0;
@@ -64,6 +62,14 @@ var keypadMaxX = 800;
 
 var keypadMinY = 247;
 var keypadMaxY = 300;
+
+// station area
+var stationMinX = 325;
+var stationMaxX = 675;
+
+var stationMinY = 45;
+var stationMaxY = 395;
+
 
 // preload function for loading our images and instructions
 function preload() {
@@ -100,6 +106,8 @@ function draw() {
 
 }
 
+//========= Start of all Function variable blocks, In chronological numerical order =========
+
 // Welcome Screen
 drawWelcome = function () {
     fill(255);
@@ -112,9 +120,13 @@ drawInstructions = function () {
     fill(255);
     noStroke();
     textAlign(CENTER);
-    text("Press Space", width / 2, height / 2);
+    // image of ROCO
     image(images[3], rocoOffsetX, rocoOffsetY);
+
+    // set speech bubble
     rect(speechBoxX, speechBoxY, speechBoxSizeW, speechBoxSizeH, 10);
+
+    // add all instruction text
     textSize(20);
     fill("blue")
     textAlign(LEFT);
@@ -125,24 +137,10 @@ drawInstructions = function () {
     textAlign(RIGHT);
 }
 
-// Room Zero
-drawRoomZero = function () {
-    image(images[2], width / 2, 220);
-    dialogueBox();
-    fill(255);
-    noStroke();
-    textAlign(LEFT);
+///***ALL ROOM ONE RELATED FUNCTIONS (INCLUDES ALT)***///
 
-    text("Okay Junior Agent! lets start on our\n" +
-        "journey! Be on the lookout for anything suspicious!\n\n" +
-        "[Click inside the square]", dialogueTextSet, dialogueTextY);
-
-    text("Digi Tip - (T)\n", padding / 2, padding / 2);
-}
-
-/// ALL ROOM ONE RELATED FUNCTIONS (INCLUDES ALT) ///
+// Room One - choice based question 
 drawRoomOne = function () {
-    // image(images[2], width / 2, 220);
     image(images[1], width / 2, height / 4 + padding);
     universalFormat();
 
@@ -154,19 +152,20 @@ drawRoomOne = function () {
     text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
+// Room One [ALT] - linear based question 
 drawRoomOneAlt = function () {
     image(images[7], width / 2, 220);
-
     universalFormat();
 
-    text("Bad Idea! CAT from before has now started running after you.\n" +
-        "Hide in the nearest public station to get them off our tail\n\n" +
+    text("Bad Idea! The CAT from before has now started running after\n" +
+        "you. Hide in the nearest public station to get them off our tail\n\n" +
         "[Click on station]", dialogueTextSet, dialogueTextY);
 
     fill("blue");
     text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
+// Hint -> Room One: Don't trust strangers with your private information
 drawHintOne = function () {
     image(images[1], width / 2, height / 4 + padding);
     universalFormat();
@@ -175,6 +174,7 @@ drawHintOne = function () {
         "especially to strangers online\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
+// Hint -> Room One[A:T]: Block people who are giving you a hard time
 drawHintOneAlt = function () {
     image(images[7], width / 2, 220);
     universalFormat();
@@ -184,7 +184,9 @@ drawHintOneAlt = function () {
         "back tell a trusted adult about it to take action.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
-/// ALL ROOM 2 RELATED FUNCTIONS (INCLUDES ALT) ///
+///***ALL ROOM 2 RELATED FUNCTIONS (INCLUDES ALT)***///
+
+// Room Two - choice based question 
 drawRoomTwo = function () {
     image(images[1], width / 2, height / 4 + padding);
     universalFormat();
@@ -197,6 +199,7 @@ drawRoomTwo = function () {
     text("Digi Tip - (T)\n", 50, 50);
 }
 
+// Hint -> Room Two: importance of calling for help
 drawHintTwo = function () {
     image(images[1], width / 2, height / 4 + padding);
     universalFormat();
@@ -205,6 +208,7 @@ drawHintTwo = function () {
         "and talk to them about how you feel.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
+// Room Two (Task) - click to call number on phone
 drawDailPhone = function () {
     image(images[5], width / 2, height / 2);
 
@@ -216,8 +220,8 @@ drawDailPhone = function () {
     text("dial (click) the buttons on the phone to call for backup (4 times)", padding, padding / 2);
 }
 
+// Room Two [ALT] - linear choice question
 drawRoomTwoAlt = function () {
-    // image(images[2], width / 2, height/2);
     image(images[6], width / 2, height / 4 + padding);
     universalFormat();
 
@@ -226,7 +230,9 @@ drawRoomTwoAlt = function () {
         "Follow them to get back on track.\n\n(1) Follow them", dialogueTextSet, dialogueTextY);
 }
 
-/// ALL ROOM 3 RELATED FUNCTIONS (INCLUDES ALT) ///
+///***ALL ROOM 3 RELATED FUNCTIONS (INCLUDES ALT)***///
+
+// Room Three (Task) - scan key card over key pad
 drawRoomThree = function () {
     image(images[4], width / 2, height / 4 + padding);
     rect(mouseX - 25, mouseY - 25, 75, 50, 5);
@@ -242,6 +248,7 @@ drawRoomThree = function () {
     }
 }
 
+// Room Three (Task) [ALT] - Spamming keys to break doors
 drawRoomThreeAlt = function () {
     image(images[8], width / 2, height / 4 + padding);
     universalFormat();
@@ -259,7 +266,9 @@ drawRoomThreeAlt = function () {
     text("\tHealth:\n", padding, padding / 2);
 }
 
-/// ALL ROOM FOUR RELATED FUNCTIONS (INCLUDES ALT) ///
+///***ALL ROOM FOUR RELATED FUNCTIONS (INCLUDES ALT)***///
+
+// Room Four - choice based question 
 drawRoomFour = function () {
     image(images[0], width / 2, height / 4);
     universalFormat();
@@ -272,12 +281,13 @@ drawRoomFour = function () {
     text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
+// Room Four [ALT] - linear choice based question
 drawRoomFourAlt = function () {
     image(images[0], width / 2, height / 4);
     universalFormat();
 
     text("Phew! We've almost got what we need. But Oh No! We\n" +
-        "forgot the name of the file. We'll have to now download files\n" +
+        "forgot the name of the file. Now we'll have to download files\n" +
         "at random. This could crash the system are you sure??\n\n" +
         "(1) I'm Sure", dialogueTextSet, dialogueTextY);
 
@@ -285,6 +295,7 @@ drawRoomFourAlt = function () {
     text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
+// Hint -> Room Four: Password Strength and Safe Keeping
 drawHintFour = function () {
     image(images[0], width / 2, height / 4);
     universalFormat();
@@ -295,6 +306,7 @@ drawHintFour = function () {
         "family members that you trust.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
+// Hint -> Room Four[ALT]: Caution Downloading files from the internet, Virus Awareness
 drawHintFourAlt = function () {
     image(images[0], width / 2, height / 4);
     universalFormat();
@@ -304,8 +316,11 @@ drawHintFourAlt = function () {
         "with a virus!!\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
-/// Fifth Room Alt only ///
+///***FIFTH ROOM (ALT ONLY)***///
+
+// Room Five (Task) [ALT] - Spamming key under the time limit
 drawRoomFiveAlt = function () {
+    // animation
     push();
     rectMode(CENTER);
     translate(width/2, height/2);
@@ -313,12 +328,11 @@ drawRoomFiveAlt = function () {
     image(images[12], 0, 0);
     pop();
 
+    // update rotate
     virus = virus + (spamVirus/200);
 
-    
+    // related text for task     
     text("[Spam X]", padding - 50, padding * 2);
-
-    
     text("# hits: " + spamVirus, width / 2 - 60, padding * 1.5);
     text("Time Remaining: " + Math.round(timer.getRemainingTime()), width / 2 + padding, padding * 1.5);
     textSize(40);
@@ -327,6 +341,7 @@ drawRoomFiveAlt = function () {
     fill(255);
     textSize(30);
 
+    // checks end result of task
     if (spamVirus < spamVirusMax && timer.expired()) {
         drawFunction = drawGameOver;
     } 
@@ -335,13 +350,15 @@ drawRoomFiveAlt = function () {
     }
 }
 
+///*****FINAL ENDING ROOMS*****///
+
 // First Ending -- Best Ending
 drawFinalRoom = function () {
     image(images[9], width / 2, height / 4);
     universalFormat();
 
-    text("NICE WORK agent now we have all of the super secret files\n" +
-        "all thanks to you!\n\n" +
+    text("NICE WORK Junior Agent now we have all of the SUPER \n" +
+        "SECRET FILES all thanks to you!!!!\n\n" +
         "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
 }
 
@@ -351,7 +368,7 @@ drawOkayRoom = function () {
     universalFormat();
 
     text("Not too shabby Junior Agent! Now we have some of the\n" +
-        "secret files all thanks to you!\n\n" +
+        "SECRET FILES. Thanks for the help!\n\n" +
         "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
 }
 
@@ -364,10 +381,13 @@ drawGameOver = function () {
         "Would you like to try again?\n" +
         "(Y) Restart game\n\n(N) Return to Home", dialogueTextSet, dialogueTextY);
 }
+//========= End of all Function variable blocks, In chronological numerical order =========
 
-
-// KEY TYPED FUNCTION //
+// keyTyped() -- handles all user keyboard input which desides which room 
+//               user needs to be taken to next. 
 function keyTyped() {
+
+    ///*****MAIN ROOMS*****///
     // HOME SCREEN //
     if (drawFunction == drawWelcome) {
         if (key == ' ') {
@@ -387,7 +407,7 @@ function keyTyped() {
 
     ///*****MAIN ROOMS*****///
 
-    // FIRST ROOM //
+    // MAIN ROOM ONE //
     if (drawFunction == drawRoomOne) {
         switch (key) {
             case '1':
@@ -407,17 +427,20 @@ function keyTyped() {
 
     // HINT 1 SCREEN //
     if (drawFunction == drawHintOne) {
+
         switch (key) {
             case 'B':
             case 'b':
                 drawFunction = drawRoomOne;
                 break;
         }
+
         return;
     }
 
-    // SECOND ROOM //
+    // MAIN ROOM TWO //
     if (drawFunction == drawRoomTwo) {
+
         switch (key) {
             case '1':
                 drawFunction = drawDailPhone;
@@ -430,36 +453,24 @@ function keyTyped() {
                 drawFunction = drawHintTwo;
                 break;
         }
+
         return;
     }
 
-    // HINT 1 SCREEN //
+    // HINT 2 SCREEN //
     if (drawFunction == drawHintTwo) {
+
         switch (key) {
             case 'B':
             case 'b':
                 drawFunction = drawRoomTwo;
                 break;
         }
+
         return;
     }
 
-
-    // THIRD ROOM //
-    if (drawFunction == drawRoomThree) {
-        switch (key) {
-            case 'b':
-                spamDoor = spamDoor + 1;
-                break;
-        }
-        if (spamDoor > spamDoorMax) {
-            spamDoor = 0;
-            drawFunction = drawRoomFour;
-        }
-        return;
-    }
-
-    // FORTH ROOM //
+    // MAIN ROOM FOUR //
     if (drawFunction == drawRoomFour) {
         switch (key) {
             case '1':
@@ -479,24 +490,29 @@ function keyTyped() {
 
     // HINT 4 SCREEN //
     if (drawFunction == drawHintFour) {
+
         switch (key) {
             case 'B':
             case 'b':
                 drawFunction = drawRoomFour;
                 break;
         }
+
         return;
     }
 
     ///*****ALT ROOMS*****///
 
+    // ALT ROOM ONE //
     if (drawFunction == drawRoomOneAlt) {
+
         switch (key) {
             case 'T':
             case 't':
                 drawFunction = drawHintOneAlt;
                 break;
         }
+
         return;
     }
 
@@ -513,6 +529,7 @@ function keyTyped() {
         return;
     }
 
+    // ALT ROOM TWO //
     if (drawFunction == drawRoomTwoAlt) {
 
         switch (key) {
@@ -526,13 +543,14 @@ function keyTyped() {
 
     // ALT ROOM THREE //
     if (drawFunction == drawRoomThreeAlt) {
-
+        // spamming 'b' to break door
         switch (key) {
+            case 'B':
             case 'b':
                 spamDoor = spamDoor + 1;
                 break;
         }
-
+        // if door reaches max spams go to next room
         if (spamDoor > spamDoorMax) {
             spamDoor = 0;
             drawFunction = drawRoomFourAlt;
@@ -556,6 +574,7 @@ function keyTyped() {
                 break;
         }
 
+        return;
     }
 
     // HINT 4 ALT SCREEN //
@@ -571,6 +590,7 @@ function keyTyped() {
         return;
     }
 
+    // ALT ROOM 5 //
     if (drawFunction == drawRoomFiveAlt) {
 
         switch (key) {
@@ -601,7 +621,6 @@ function keyTyped() {
 
         return;
     }
-
 }
 
 function mousePressed() {
@@ -615,21 +634,19 @@ function mousePressed() {
 
     // ROOM ONE ALT //
     if (drawFunction == drawRoomOneAlt) {
-        if ((mouseX >= 325 && mouseX <= 675) && (mouseY >= 45 && mouseY <= 395)) {
+        if ((mouseX >= stationMinX && mouseX <= stationMaxX) && (mouseY >= stationMinY && mouseY <= stationMaxY)) {
             drawFunction = drawRoomTwoAlt;
         }
     }
-
-    print("X: " + mouseX + " : " + "Y: " + mouseY);
 }
 
-// draws the dialogue Box for each page//
+// dialogueBox() -- draws the dialogue Box for each page //
 function dialogueBox() {
     fill(72, 67, 204);
     rect(dialogueBoxPadding, height - dialogueBoxOffset, width - padding, padding * 3, dialogueBoxRadius);
 }
 
-// formatting universal to several function calls
+// universalFormat() -- formatting universal to several function calls //
 function universalFormat() {
     dialogueBox();
     fill(255);
