@@ -18,7 +18,7 @@ var timer;
 // asset arrays
 var assets = ['computer.png', 'muffin.png', 'street.jpg', 'roco.png', 'doors.png',
               'phone.png', 'duck.png', 'train.jpg', 'backdoor.png', 'gold.png',
-              'silver.png', 'bronze.png', 'virus.png'];
+              'silver.png', 'bronze.png', 'virus.png', 'front.png'];
 var instructions = [];
 var images = [];
 
@@ -110,9 +110,12 @@ function draw() {
 
 // Welcome Screen
 drawWelcome = function () {
-    fill(255);
+    drawFrontBox();
     textAlign(CENTER);
-    text("Press Start", width / 2, height / 2);
+    textSize(80)
+    text("iSPY", width / 2, padding * 3);
+    textSize(30);
+    text("Press [SPACE] to start", width / 2, height / 2);
 }
 
 // Instruction Screen
@@ -652,4 +655,14 @@ function universalFormat() {
     fill(255);
     noStroke();
     textAlign(LEFT);
+}
+
+function drawFrontBox() {
+    rectMode(CENTER);
+    fill(255);
+    rect(width/2, height/2 - padding, padding * 5, padding * 3.5, 5);
+    fill(194, 206, 255);
+    rect(width/2, height/2 - padding, padding * 4.5, padding * 3, 5);
+    fill(255);
+    rectMode(CORNER);
 }
