@@ -88,7 +88,7 @@ function setup() {
     timer = new Timer(8000);
 
     drawFunction = drawWelcome;
-    
+
     print("setting up sketch");
 }
 
@@ -137,7 +137,7 @@ drawRoomZero = function () {
         "journey! Be on the lookout for anything suspicious!\n\n" +
         "[Click inside the square]", dialogueTextSet, dialogueTextY);
 
-    text("Digi Tip - (T)\n", 50, 50);
+    text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
 /// ALL ROOM ONE RELATED FUNCTIONS (INCLUDES ALT) ///
@@ -150,7 +150,8 @@ drawRoomOne = function () {
         "They ask very PERSONAL questions about your work...\n\n" +
         "(1) do not trust them\n\n(2) give them your information", dialogueTextSet, dialogueTextY);
 
-    text("Digi Tip - (T)\n", 50, 50);
+    fill("blue");
+    text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
 drawRoomOneAlt = function () {
@@ -162,7 +163,8 @@ drawRoomOneAlt = function () {
         "Hide in the nearest public station to get them off our tail\n\n" +
         "[Click on station]", dialogueTextSet, dialogueTextY);
 
-    text("Digi Tip - (T)\n", 50, 50);
+    fill("blue");
+    text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
 drawHintOne = function () {
@@ -178,13 +180,12 @@ drawHintOneAlt = function () {
     universalFormat();
 
     text("If someone online is constantly following you or harassing\n" +
-        "you online BLOCK them! If they keep coming back tell a\n" +
-        "trusted adult about it.\n\n(B) for back", dialogueTextSet, dialogueTextY);
+        "you and won't stop, BLOCK them! If they keep coming\n" +
+        "back tell a trusted adult about it to take action.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
 /// ALL ROOM 2 RELATED FUNCTIONS (INCLUDES ALT) ///
 drawRoomTwo = function () {
-    // image(images[2], width / 2, height/2);
     image(images[1], width / 2, height / 4 + padding);
     universalFormat();
 
@@ -192,6 +193,7 @@ drawRoomTwo = function () {
         "Quick take action!\n\n" +
         "(1) Call the agency for backup\n\n(2) do nothing", dialogueTextSet, dialogueTextY);
 
+    fill("blue");
     text("Digi Tip - (T)\n", 50, 50);
 }
 
@@ -199,7 +201,8 @@ drawHintTwo = function () {
     image(images[1], width / 2, height / 4 + padding);
     universalFormat();
 
-    text("If you're ever in an uncomfortable position online when talking to someone call an adult.\n\n(B) for back", dialogueTextSet, dialogueTextY);
+    text("If someone online makes you uncomfortable call an adult\n" + 
+        "and talk to them about how you feel.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
 drawDailPhone = function () {
@@ -264,6 +267,9 @@ drawRoomFour = function () {
     text("Phew! Almost got the file. Now we need to choose a STRONG\n" +
         "password to finish the download.\n\n" +
         "(1) 12345\n\n(2) JsdD3*!", dialogueTextSet, dialogueTextY);
+
+    fill("blue");
+    text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
 drawRoomFourAlt = function () {
@@ -274,6 +280,8 @@ drawRoomFourAlt = function () {
         "forgot the name of the file. We'll have to now download files\n" +
         "at random. This could crash the system are you sure??\n\n" +
         "(1) I'm Sure", dialogueTextSet, dialogueTextY);
+
+    fill("blue");
     text("Digi Tip - (T)\n", padding / 2, padding / 2);
 }
 
@@ -282,8 +290,9 @@ drawHintFour = function () {
     universalFormat();
 
     text("When making passwords make them unique but memorable!\n" +
-        "Never share your passwords with other people \n" +
-        "unless they are a trusted adult\n(B) for back", dialogueTextSet, dialogueTextY);
+        "Remember to save your passwords in a safe place and\n" +
+        "never share them with other people outside of\n" +
+        "family members that you trust.\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
 drawHintFourAlt = function () {
@@ -291,11 +300,11 @@ drawHintFourAlt = function () {
     universalFormat();
 
     text("Ask permission before downloading unknown files from\n" +
-        "online. You could come across a virus that could \n" +
-        "infect your computer\n(B) for back", dialogueTextSet, dialogueTextY);
+        "off the internet. You could end up infecting your computer\n" +
+        "with a virus!!\n\n(B) for back", dialogueTextSet, dialogueTextY);
 }
 
-// Fifth Room Alt only
+/// Fifth Room Alt only ///
 drawRoomFiveAlt = function () {
     push();
     rectMode(CENTER);
@@ -313,12 +322,15 @@ drawRoomFiveAlt = function () {
     text("# hits: " + spamVirus, width / 2 - 60, padding * 1.5);
     text("Time Remaining: " + Math.round(timer.getRemainingTime()), width / 2 + padding, padding * 1.5);
     textSize(40);
+    fill("blue");
     text("KILL THE VIRUS!!!", padding - 50, padding * 1.5);
+    fill(255);
     textSize(30);
 
     if (spamVirus < spamVirusMax && timer.expired()) {
         drawFunction = drawGameOver;
-    } else if (spamVirus >= spamVirusMax && timer.expired()) {
+    } 
+    else if (spamVirus >= spamVirusMax && timer.expired()) {
         drawFunction = drawOkayRoom;
     }
 }
