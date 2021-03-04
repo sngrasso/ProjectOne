@@ -658,11 +658,15 @@ function universalFormat() {
 }
 
 function drawFrontBox() {
+    noStroke();
     rectMode(CENTER);
     fill(255);
-    rect(width/2, height/2 - padding, padding * 5, padding * 3.5, 5);
+    rect(width / 2, height / 2 + 75, 30, 150);
+    rect(width / 2, height / 2 + padding + 40, 100, 30, 4);
+    rect(width / 2, height / 2 - padding, padding * 5, padding * 3.5, 5);
     fill(194, 206, 255);
-    rect(width/2, height/2 - padding, padding * 4.5, padding * 3, 5);
+    rect(width / 2, height / 2 - padding, padding * 4.5, padding * 3, 5);
     fill(255);
     rectMode(CORNER);
+    
 }
